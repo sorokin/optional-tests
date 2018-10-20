@@ -28,6 +28,7 @@ counted& counted::operator=(counted const& c)
     EXPECT_EQ(it->second, data);
 
     data = c.data;
+    it->second = c.data;
     return *this;
 }
 
