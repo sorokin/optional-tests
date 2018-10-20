@@ -112,8 +112,10 @@ TEST(correctness, clear)
     EXPECT_TRUE(static_cast<bool>(a));
     a.clear();
     EXPECT_FALSE(static_cast<bool>(a));
+    g.expect_no_instances();
     a.clear();
     EXPECT_FALSE(static_cast<bool>(a));
+    g.expect_no_instances();
 }
 
 TEST(correctness, deref)
