@@ -1,6 +1,6 @@
 #pragma once
 
-#include <set>
+#include <map>
 
 struct counted
 {
@@ -17,7 +17,7 @@ struct counted
 private:
     int data;
 
-    static std::set<counted const*> instances;
+    static std::map<counted const*, int> instances;
 };
 
 struct counted::no_new_instances_guard
@@ -32,5 +32,5 @@ struct counted::no_new_instances_guard
     void expect_no_instances();
 
 private:
-    std::set<counted const*> old_instances;
+    std::map<counted const*, int> old_instances;
 };

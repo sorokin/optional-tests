@@ -4,14 +4,14 @@
 counted::counted(int data)
     : data(data)
 {
-    auto p = instances.insert(this);
+    auto p = instances.insert({this, data});
     EXPECT_TRUE(p.second);
 }
 
 counted::counted(counted const& other)
     : data(other.data)
 {
-    auto p = instances.insert(this);
+    auto p = instances.insert({this, data});
     EXPECT_TRUE(p.second);
 }
 
@@ -23,7 +23,9 @@ counted::~counted()
 
 counted& counted::operator=(counted const& c)
 {
-    EXPECT_TRUE(instances.find(this) != instances.end());
+    auto it = instances.find(this);
+    EXPECT_TRUE(it != instances.end());
+    EXPECT_EQ(it->second, data);
 
     data = c.data;
     return *this;
@@ -31,12 +33,14 @@ counted& counted::operator=(counted const& c)
 
 counted::operator int() const
 {
-    EXPECT_TRUE(instances.find(this) != instances.end());
+    auto it = instances.find(this);
+    EXPECT_TRUE(it != instances.end());
+    EXPECT_EQ(it->second, data);
 
     return data;
 }
 
-std::set<counted const*> counted::instances;
+std::map<counted const*, int> counted::instances;
 
 counted::no_new_instances_guard::no_new_instances_guard()
     : old_instances(instances)
